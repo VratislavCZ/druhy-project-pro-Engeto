@@ -7,23 +7,19 @@ discord: Vratislav M (dříve: abbadc#8421)
 """
 import random
 
-
 oddelovac_v = "============================================"
 oddelovac_m = "--------------------------------------------"
 
-plocha ="+---+---+---+\n" \
-        "| | | |\n" \
-        "+---+---+---+\n" \
-        "| | | | \n" \
-        "+---+---+---+\n" \
-        "| | | |\n" \
-        "+---+---+---+\n" \
+def print_board():
+    for i in range(3):
+        print("+---+---+---+")
+        for j in range(3):
+            print("| {} ".format(i*3 + j + 1), end="")
+        print("|")
+    print("+---+---+---+")
 
-# hezci_plocha: "   |   |   \n" \
-#          "-----------\n" \
-#          "   |   |   \n" \
-#          "-----------\n" \
-#          "   |   |   "
+    return print_board
+
 
 print("Welcome to Tic Tac Toe")
 print(oddelovac_v)
@@ -41,4 +37,19 @@ print(oddelovac_v)
 print("Let's start the game")
 print(oddelovac_m)
 
-print(plocha)
+print_board()
+
+# possible action, pc or user
+def vselect_game_type():
+    while True:
+        typ = input("Select game type: 1 - against player, 2 - against computer: ")
+        if typ == "1":
+            self.player2 = player("O")
+            break
+        elif typ == "2":
+            self.player2 = computer("O")  
+            break
+        else:
+            print("Invalid choice. Please enter 1 or 2.")
+
+vselect_game_type()
