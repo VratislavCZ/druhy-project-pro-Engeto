@@ -10,7 +10,8 @@ import random
 oddelovac_v = "============================================"
 oddelovac_m = "--------------------------------------------"
 
-def print_board():
+# helpful game board
+def help_board():
     for i in range(3):
         print("+---+---+---+")
         for j in range(3):
@@ -18,7 +19,7 @@ def print_board():
         print("|")
     print("+---+---+---+")
 
-    return print_board
+    return help_board
 
 
 print("Welcome to Tic Tac Toe")
@@ -37,19 +38,35 @@ print(oddelovac_v)
 print("Let's start the game")
 print(oddelovac_m)
 
-print_board()
+# game board during the game
+def print_board():
+    for i in range(3):
+        print("+---+---+---+")
+        for j in range(3):
+            print("|   ", end="")
+        print("|")
+    print("+---+---+---+")
 
 # possible action, pc or user
-def vselect_game_type():
+def select_game_type():
     while True:
         typ = input("Select game type: 1 - against player, 2 - against computer: ")
         if typ == "1":
-            self.player2 = player("O")
+            player2 = create_player("O")
             break
         elif typ == "2":
-            self.player2 = computer("O")  
+            player2 = create_computer("O")  
             break
         else:
             print("Invalid choice. Please enter 1 or 2.")
 
-vselect_game_type()
+def create_player(symbol):
+    return {"type": "player", "symbol": symbol}
+
+def create_computer(symbol):
+    return {"type": "computer", "symbol": symbol}
+
+
+select_game_type()
+
+help_board()
