@@ -21,6 +21,15 @@ def help_board():
 
     return help_board
 
+# game board during the game
+def print_board():
+    for i in range(3):
+        print("+---+---+---+")
+        for j in range(3):
+            print("|   ", end="")
+        print("|")
+    print("+---+---+---+")
+
 # Print a welcome message
 print("Welcome to Tic Tac Toe")
 print(oddelovac_v)
@@ -46,15 +55,6 @@ print("Let's start the game")
 
 print(oddelovac_m)
 
-# game board during the game
-def print_board():
-    for i in range(3):
-        print("+---+---+---+")
-        for j in range(3):
-            print("|   ", end="")
-        print("|")
-    print("+---+---+---+")
-
 # possible action, pc or user
 def select_game_type():
     while True:
@@ -67,13 +67,12 @@ def select_game_type():
             break
         else:
             print("Invalid choice. Please enter 1 or 2.")
-
+# action for player vs player
 def create_player(symbol):
     return {"type": "player", "symbol": symbol}
-
+# action for player vs computer
 def create_computer(symbol):
     return {"type": "computer", "symbol": symbol}
-
 
 select_game_type()
 
