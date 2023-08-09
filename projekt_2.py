@@ -5,75 +5,98 @@ email: abbadc@gmail.com
 discord: Vratislav M (dříve: abbadc#8421)
 
 """
+# import moduls from python
 import random
+import os
 
-oddelovac_v = "============================================"
-oddelovac_m = "--------------------------------------------"
+# import play_board not work :(
+from play_board import *
 
-# helpful game board
-def help_board():
-    for i in range(3):
-        print("+---+---+---+")
-        for j in range(3):
-            print("| {} ".format(i*3 + j + 1), end="")
-        print("|")
-    print("+---+---+---+")
-
-    return help_board
-
-# game board during the game
-def print_board():
-    for i in range(3):
-        print("+---+---+---+")
-        for j in range(3):
-            print("|   ", end="")
-        print("|")
-    print("+---+---+---+")
+# Define separator variables
+separator_b = "=" * 44
+separator_s = "-" * 44
 
 # Print a welcome message
 print("Welcome to Tic Tac Toe")
-print(oddelovac_v)
+print(separator_b)
 
 # Print game rules
 print("""GAME RULES:
 Each player can place one mark (or stone)
 per turn on the 3x3 grid. The WINNER is
 who succeeds in placing three of their
-marks in a: """)
+marks in a:\n""")
 
 # Set the color code
 red_code = '\033[31m'   
-print(red_code +"* horizontal,")
+print(red_code + "* horizontal,")
 print("* vertical or")
 print("* diagonal row")
 print('\033[0m', end='')
+print()
 
-print(oddelovac_v)
+print(separator_b)
 
 # Print a message to start the game
 print("Let's start the game")
+print(separator_s)
 
-print(oddelovac_m)
+print()
+print(f"This is your board\n")
+helping()
+print()
 
-# possible action, pc or user
+# Function to print the game board
+def printing_board(board):
+    print("+---+---+---+")
+    for i in range(3):
+        print("| {} | {} | {} |".format(*board[i*3:i*3+3]))
+        print("+---+---+---+")
+
+# Function to clear the console
+def clear_console():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+# Possible action, for select game type: with pc or with player
 def select_game_type():
     while True:
         typ = input("Select game type: 1 - against player, 2 - against computer: ")
-        if typ == "1":
-            player2 = create_player("O")
-            break
-        elif typ == "2":
-            player2 = create_computer("O")  
-            break
-        else:
-            print("Invalid choice. Please enter 1 or 2.")
-# action for player vs player
+        if typ in ["1", "2"]:
+            symbol = "O"
+            if typ == "2":
+                return create_computer(symbol)
+            return create_player(symbol)
+        print("Invalid choice. Please enter 1 or 2.")
+
+# Action for player vs player
 def create_player(symbol):
     return {"type": "player", "symbol": symbol}
-# action for player vs computer
+
+# Action for player vs computer
 def create_computer(symbol):
     return {"type": "computer", "symbol": symbol}
 
-select_game_type()
+player = select_game_type()
 
-help_board()
+# Function for player's move
+def player_move(board, symbol):
+    while True:
+        position = input("Enter a position for your move (1-9): ")
+
+        # Check if the input is valid and the position is empty
+        if position.isdigit() and 1 <= int(position) <= 9:
+            index = int(position) - 1
+            if board[index] == " ":
+                board[index] = symbol
+                break
+            else:
+                print("Position is already occupied. Please select another position.")
+        else:
+            print("Invalid move. Enter a number from 1 to 9 and select an empty position.")
+
+# Function for computer's move
+def computer_move(board, symbol):
+    available_positions = [i for i, cell in enumerate(board) if cell == " "]
+    position = random.choice(available_positions)
+    board[position] = symbol
+
