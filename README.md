@@ -22,5 +22,8 @@ There are other functions such as:
 
  Function to check for a full board
 
+ For now, I'm not using docstrings in functions because they make the code less clear to me and I find it difficult to navigate through them.
+ 
+
 
 

@@ -10,7 +10,7 @@ import random
 import os
 
 # import play_board 
-from play_board import printing_board
+from play_board import helping_board, printing_board
 
 # Define separator variables
 separator_b = "=" * 44
@@ -40,6 +40,11 @@ print(separator_b)
 # Print a message to start the game
 print("Let's start the game")
 print(separator_s)
+
+print()
+print("This is your board")
+print()
+helping_board()
 
 # Function to print the game board
 def printing_board(board):
@@ -80,10 +85,7 @@ def player_vs_player():
     current_player = players[0]
 
     while True:
-
-        # Clear the console
-        clear_console()
-
+        
         # Print game board
         printing_board(board)
 
@@ -106,6 +108,9 @@ def player_vs_player():
 
         # Switch to the other player
         current_player = players[1] if current_player == players[0] else players[0]
+
+        # Clear the console
+        clear_console()
 
 # Function to check for a win
 def check_winner(board, symbol):
