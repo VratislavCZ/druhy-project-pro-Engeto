@@ -1,5 +1,5 @@
 """
-projekt_2.py: druhý projekt do Engeto Online Python Akademie
+projekt_2.py: second project for Engeto Online Python Akademie
 author: Vratislav Martin
 email: abbadc@gmail.com
 discord: Vratislav M (dříve: abbadc#8421)
@@ -10,7 +10,7 @@ import random
 import os
 
 # import play_board 
-from play_board import helping, printing_board
+from play_board import printing_board
 
 # Define separator variables
 separator_b = "=" * 44
@@ -41,11 +41,6 @@ print(separator_b)
 print("Let's start the game")
 print(separator_s)
 
-print()
-print(f"This is your board\n")
-helping()
-print()
-
 # Function to print the game board
 def printing_board(board):
     print("+---+---+---+")
@@ -57,70 +52,60 @@ def printing_board(board):
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Function to create players.
-def create_players():
-    return [
-        {"type": "player", "symbol": "O"},
-        {"type": "player", "symbol": "X"}
-    ]
+# Action for create players
+def create_player(number):
+    symbol = "X" if number == "1" else "O"
+    return {"type": "player", "symbol": symbol}
 
-# Main game loop
-def game_loop():
-    # Initialize the board
-    board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
-    players = create_players()
-
-    # Action for player vs player
-    def create_player(symbol):
-        return {"type": "player", "symbol": symbol}
-
-    # Function for a player's move
-    def player_move(board, players, player_number):
-        while True:
-            position = input(f"Player {player_number}: Enter a position for your move (1-9): ")
-
-            # Check if the input is valid and the position is empty
-            if position.isdigit() and 1 <= int(position) <= 9:
-                index = int(position) - 1
-                if board[index] == " ":
-                    board[index] = players["symbol"]
-                    break
-                else:
-                    print("Position is already occupied. Please select another position.")
-            else:
-                print("Invalid move. Enter a number from 1 to 9 and select an empty position.")
-
-    # Game loop until there's a winner or a draw
+# Function for player's move
+def player_move(board, symbol):
     while True:
-        player_move(board, players, 1)
+        position = input(f"Player {symbol}, enter a position for your move (1-9): ")
+
+        # Check if the input is valid and the position is empty
+        if position.isdigit() and 1 <= int(position) <= 9:
+            index = int(position) - 1
+            if board[index] == " ":
+                board[index] = symbol
+                break
+            else:
+                print("Position is already occupied. Please select another position.")
+        else:
+            print("Invalid move. Enter a number from 1 to 9 and select an empty position.")
+
+# Main game loop 
+def player_vs_player():
+    board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+    players = [create_player("1"), create_player("2")]
+    current_player = players[0]
+
+    while True:
+
+        # Clear the console
+        clear_console()
+
+        # Print game board
         printing_board(board)
 
-        if check_winner(board, players.get("symbol")):
+        # Player's move
+        player_move(board, current_player["symbol"])
+
+        # Check if the player wins
+        if check_winner(board, current_player["symbol"]):
             clear_console()
             printing_board(board)
-            print("Player wins!")
+            print(f"Player {current_player['symbol']} wins!")
             break
 
+        # Check for a draw
         if is_board_full(board):
             clear_console()
             printing_board(board)
-            print("The match ended in a tie!")
+            print("This is a Draw!")
             break
 
-        player_move(board, players, 2)
-        printing_board(board)
-
-        if check_winner(board, players.get("symbol")):
-            clear_console()
-            printing_board(board)
-            print("Player 2 wins!")
-            break
-
-        if is_board_full(board):
-            clear_console()
-            printing_board(board)
-            print("The match ended in a tie!")
-            break
+        # Switch to the other player
+        current_player = players[1] if current_player == players[0] else players[0]
 
 # Function to check for a win
 def check_winner(board, symbol):
@@ -128,20 +113,19 @@ def check_winner(board, symbol):
     for i in range(0, 9, 3):
         if all(cell == symbol for cell in board[i:i+3]):
             return True
-
+    
     # Check columns
     for i in range(3):
         if all(board[i+j*3] == symbol for j in range(3)):
             return True
-
+    
     # Check diagonals
     if all(board[i] == symbol for i in [0, 4, 8]) or all(board[i] == symbol for i in [2, 4, 6]):
         return True
-    return False
 
 # Function to check for a full board
 def is_board_full(board):
     return all(cell != " " for cell in board)
 
-# Start the game
-game_loop()
+# Start the game (player vs player)
+player_vs_player()
