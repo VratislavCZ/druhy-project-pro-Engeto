@@ -9,8 +9,8 @@ discord: Vratislav M (dříve: abbadc#8421)
 import random
 import os
 
-# import play_board not work :(
-from play_board import *
+# import play_board 
+from play_board import helping, printing_board
 
 # Define separator variables
 separator_b = "=" * 44
@@ -57,46 +57,91 @@ def printing_board(board):
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Possible action, for select game type: with pc or with player
-def select_game_type():
-    while True:
-        typ = input("Select game type: 1 - against player, 2 - against computer: ")
-        if typ in ["1", "2"]:
-            symbol = "O"
-            if typ == "2":
-                return create_computer(symbol)
-            return create_player(symbol)
-        print("Invalid choice. Please enter 1 or 2.")
+# Function to create players.
+def create_players():
+    return [
+        {"type": "player", "symbol": "O"},
+        {"type": "player", "symbol": "X"}
+    ]
 
-# Action for player vs player
-def create_player(symbol):
-    return {"type": "player", "symbol": symbol}
+# Main game loop
+def game_loop():
+    # Initialize the board
+    board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+    players = create_players()
 
-# Action for player vs computer
-def create_computer(symbol):
-    return {"type": "computer", "symbol": symbol}
+    # Action for player vs player
+    def create_player(symbol):
+        return {"type": "player", "symbol": symbol}
 
-player = select_game_type()
+    # Function for a player's move
+    def player_move(board, players, player_number):
+        while True:
+            position = input(f"Player {player_number}: Enter a position for your move (1-9): ")
 
-# Function for player's move
-def player_move(board, symbol):
-    while True:
-        position = input("Enter a position for your move (1-9): ")
-
-        # Check if the input is valid and the position is empty
-        if position.isdigit() and 1 <= int(position) <= 9:
-            index = int(position) - 1
-            if board[index] == " ":
-                board[index] = symbol
-                break
+            # Check if the input is valid and the position is empty
+            if position.isdigit() and 1 <= int(position) <= 9:
+                index = int(position) - 1
+                if board[index] == " ":
+                    board[index] = players["symbol"]
+                    break
+                else:
+                    print("Position is already occupied. Please select another position.")
             else:
-                print("Position is already occupied. Please select another position.")
-        else:
-            print("Invalid move. Enter a number from 1 to 9 and select an empty position.")
+                print("Invalid move. Enter a number from 1 to 9 and select an empty position.")
 
-# Function for computer's move
-def computer_move(board, symbol):
-    available_positions = [i for i, cell in enumerate(board) if cell == " "]
-    position = random.choice(available_positions)
-    board[position] = symbol
+    # Game loop until there's a winner or a draw
+    while True:
+        player_move(board, players, 1)
+        printing_board(board)
 
+        if check_winner(board, players.get("symbol")):
+            clear_console()
+            printing_board(board)
+            print("Player wins!")
+            break
+
+        if is_board_full(board):
+            clear_console()
+            printing_board(board)
+            print("The match ended in a tie!")
+            break
+
+        player_move(board, players, 2)
+        printing_board(board)
+
+        if check_winner(board, players.get("symbol")):
+            clear_console()
+            printing_board(board)
+            print("Player 2 wins!")
+            break
+
+        if is_board_full(board):
+            clear_console()
+            printing_board(board)
+            print("The match ended in a tie!")
+            break
+
+# Function to check for a win
+def check_winner(board, symbol):
+    # Check rows
+    for i in range(0, 9, 3):
+        if all(cell == symbol for cell in board[i:i+3]):
+            return True
+
+    # Check columns
+    for i in range(3):
+        if all(board[i+j*3] == symbol for j in range(3)):
+            return True
+
+    # Check diagonals
+    if all(board[i] == symbol for i in [0, 4, 8]) or all(board[i] == symbol for i in [2, 4, 6]):
+        return True
+    return False
+
+# Function to check for a full board
+def is_board_full(board):
+    return all(cell != " " for cell in board)
+
+# Start the game
+game_loop()
