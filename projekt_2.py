@@ -41,10 +41,7 @@ print(separator_b)
 print("Let's start the game")
 print(separator_s)
 
-print()
-print("This is your board")
-print()
-helping_board()
+
 
 # Function to print the game board
 def printing_board(board):
@@ -84,10 +81,18 @@ def player_vs_player():
     players = [create_player("1"), create_player("2")]
     current_player = players[0]
 
+    print()
+    print("This is your board")
+    print()
+    helping_board()
+
+    move_count = 1
+
     while True:
-        
-        # Print game board
-        printing_board(board)
+          
+        # After the seventh move, print game board
+        if move_count > 1:
+            printing_board(board)
 
         # Player's move
         player_move(board, current_player["symbol"])
@@ -108,6 +113,7 @@ def player_vs_player():
 
         # Switch to the other player
         current_player = players[1] if current_player == players[0] else players[0]
+        move_count += 1
 
         # Clear the console
         clear_console()
