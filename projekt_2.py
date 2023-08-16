@@ -41,8 +41,6 @@ print(separator_b)
 print("Let's start the game")
 print(separator_s)
 
-
-
 # Function to print the game board
 def printing_board(board):
     print("+---+---+---+")
@@ -90,7 +88,7 @@ def player_vs_player():
 
     while True:
           
-        # After the seventh move, print game board
+        # Counter
         if move_count > 1:
             printing_board(board)
 
