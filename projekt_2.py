@@ -41,13 +41,6 @@ print(separator_b)
 print("Let's start the game")
 print(separator_s)
 
-# Function to print the game board
-def printing_board(board):
-    print("+---+---+---+")
-    for i in range(3):
-        print("| {} | {} | {} |".format(*board[i*3:i*3+3]))
-        print("+---+---+---+")
-
 # Function to clear the console
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
